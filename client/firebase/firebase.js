@@ -1,10 +1,7 @@
-import firebase, { getApps } from "@react-native-firebase/app";
+import firebase from "@react-native-firebase/app";
 import "@react-native-firebase/auth";
 import "@react-native-firebase/firestore";
 import "@react-native-firebase/storage";
-import { connectAuthEmulator } from "@react-native-firebase/auth";
-import { connectFirestoreEmulator } from "@react-native-firebase/firestore";
-import { connectStorageEmulator } from "@react-native-firebase/storage";
 
 // const firebaseConfig = {
 //     apiKey: process.env.EXPO_PUBLIC_FIREBASE_KEY!,
@@ -21,14 +18,16 @@ import { connectStorageEmulator } from "@react-native-firebase/storage";
 //     firebase.initializeApp(firebaseConfig);
 // }
 
-const apps = getApps();
+const apps = firebase.apps;
 export const app = apps[0];
+
 export const auth = firebase.auth(app);
 export const firestore = firebase.firestore(app);
 export const storage = firebase.storage(app);
 
 if (__DEV__) {
-  connectAuthEmulator(auth, "http://127.0.0.1:9099");
-  connectFirestoreEmulator(firestore, "localhost", 8080);
-  connectStorageEmulator(storage, "localhost", 9199);
+  auth.useEmulator("http://localhost:9099");
+  firestore.useEmulator("http://localhost:8080");
+  storage.useEmulator("http://localhost:9199");
 }
+export default firebase;
