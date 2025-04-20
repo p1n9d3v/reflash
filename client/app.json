@@ -10,14 +10,16 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.client"
+      "bundleIdentifier": "com.test.rebrain",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.client"
+      "package": "com.test.rebrain",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
