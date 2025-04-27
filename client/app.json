@@ -9,10 +9,12 @@
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
+            "googleServicesFile": "../GoogleService-Info.plist",
             "supportsTablet": true,
             "bundleIdentifier": "com.anonymous.test-expo"
         },
         "android": {
+            "googleServicesFile": "../google-services.json",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"

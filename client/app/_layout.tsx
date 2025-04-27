@@ -11,6 +11,7 @@ import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 import { Slot } from 'expo-router';
 
 import '../global.css';
+import { SessionProvider } from '@/context/session';
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -18,6 +19,7 @@ export {
 } from 'expo-router';
 
 // export const unstable_settings = {
+//
 //   // Ensure that reloading on `/modal` keeps a back button present.
 //   initialRouteName: "gluestack",
 // };
@@ -47,12 +49,15 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
     const [colorScheme, setColorScheme] = useState('light');
+
     return (
         <GluestackUIProvider mode={colorScheme === 'dark' ? 'dark' : 'light'}>
             <ThemeProvider
                 value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
             >
-                <Slot />
+                <SessionProvider>
+                    <Slot />
+                </SessionProvider>
             </ThemeProvider>
         </GluestackUIProvider>
     );
