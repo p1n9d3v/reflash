@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "test-expo",
-        "slug": "test-expo",
+        "name": "client",
+        "slug": "client",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
@@ -9,16 +9,17 @@
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
-            "googleServicesFile": "../GoogleService-Info.plist",
+            "googleServicesFile": "./GoogleService-Info.plist",
             "supportsTablet": true,
-            "bundleIdentifier": "com.anonymous.test-expo"
+            "bundleIdentifier": "com.test.rebrain"
         },
         "android": {
-            "googleServicesFile": "../google-services.json",
+            "googleServicesFile": "./google-services.json",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
-            }
+            },
+            "package": "com.test.rebrain"
         },
         "web": {
             "bundler": "metro",
@@ -28,14 +29,23 @@
         "plugins": [
             "expo-router",
             [
+                "expo-build-properties",
+                {
+                    "ios": {
+                        "useFrameworks": "static"
+                    }
+                }
+            ],
+            [
                 "expo-splash-screen",
                 {
-                    "image": "./assets/images/splash-icon.png",
+                    "image": "./assets/images/splash.png",
                     "imageWidth": 200,
                     "resizeMode": "contain",
                     "backgroundColor": "#ffffff"
                 }
-            ]
+            ],
+            "expo-build-properties"
         ],
         "experiments": {
             "typedRoutes": true

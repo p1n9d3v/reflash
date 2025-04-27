@@ -68,5 +68,3 @@ node_modules/
 # dataconnect generated files
 .dataconnect
 
-google-services.json
-GoogleService-Info.plist

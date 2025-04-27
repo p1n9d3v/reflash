@@ -9,6 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 import { Slot } from 'expo-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import '../global.css';
 import { SessionProvider } from '@/context/session';
@@ -47,18 +48,24 @@ export default function RootLayout() {
     return <RootLayoutNav />;
 }
 
+const queryClient = new QueryClient();
+
 function RootLayoutNav() {
     const [colorScheme, setColorScheme] = useState('light');
 
     return (
-        <GluestackUIProvider mode={colorScheme === 'dark' ? 'dark' : 'light'}>
-            <ThemeProvider
-                value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        <QueryClientProvider client={queryClient}>
+            <GluestackUIProvider
+                mode={colorScheme === 'dark' ? 'dark' : 'light'}
             >
-                <SessionProvider>
-                    <Slot />
-                </SessionProvider>
-            </ThemeProvider>
-        </GluestackUIProvider>
+                <ThemeProvider
+                    value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                >
+                    <SessionProvider>
+                        <Slot />
+                    </SessionProvider>
+                </ThemeProvider>
+            </GluestackUIProvider>
+        </QueryClientProvider>
     );
 }

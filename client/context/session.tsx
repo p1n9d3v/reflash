@@ -1,26 +1,27 @@
+import { onAuthChanged, signInWithGoogle } from '@/apis/auth';
+import { useMutation } from '@tanstack/react-query';
+import { router } from 'expo-router';
 import {
     createContext,
     type PropsWithChildren,
+    useContext,
     useEffect,
     useState,
 } from 'react';
+import { Alert } from 'react-native';
 import { User } from 'firebase/auth';
-import { router } from 'expo-router';
-
 const AuthContext = createContext<{
     user: User | null;
-    signIn: () => void;
+    signInWithGoogle: () => void;
     signOut: () => void;
-    session?: string | null;
 }>({
     user: null,
-    signIn: () => null,
+    signInWithGoogle: () => null,
     signOut: () => null,
-    session: null,
 });
 
 export function useSession() {
-    const value = createContext(AuthContext);
+    const value = useContext(AuthContext);
     if (!value) {
         throw new Error('useSession must be wrapped in a <SessionProvider />');
     }
@@ -31,7 +32,15 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
     const [user, setUser] = useState<User | null>(null);
 
+    const signInWithGoogleMutation = useMutation({
+        mutationFn: signInWithGoogle,
+        onError: (error) => {
+            Alert.alert('에러', error.message);
+        },
+    });
+
     useEffect(() => {
+        console.log('user', user);
         if (!user) {
             router.replace('/sign-in');
         } else {
@@ -39,12 +48,16 @@ export function SessionProvider({ children }: PropsWithChildren) {
         }
     }, [user]);
 
+    useEffect(() => {
+        onAuthChanged((user) => {
+            setUser(user as User | null);
+        });
+    }, []);
+
     return (
         <AuthContext.Provider
             value={{
-                signIn: () => {
-                    console.log('signIn');
-                },
+                signInWithGoogle: signInWithGoogleMutation.mutate,
                 signOut: () => {
                     console.log('signOut');
                 },
