@@ -8,6 +8,10 @@ import {
 } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+console.log(
+    'GoogleSignin.configure',
+    process.env.EXPO_PUBLIC_GOOGLE_SIGNIN_CLIENT_ID,
+);
 GoogleSignin.configure({
     webClientId: process.env.EXPO_PUBLIC_GOOGLE_SIGNIN_CLIENT_ID, // 웹 클라이언트 ID
     offlineAccess: true,
