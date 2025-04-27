@@ -1,15 +1,20 @@
-import { Text, View } from "react-native";
+import React from 'react';
+import { SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import LoginScreen from './LoginScreen';
+import '../firebase/firebase';
 
-export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
-  );
+export default function App() {
+    return (
+        <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="dark-content" />
+            <LoginScreen />
+        </SafeAreaView>
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+});
