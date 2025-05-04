@@ -1,16 +1,53 @@
+import { Box } from '@/components/ui/box';
 import { Button } from '@/components/ui/button';
+import { Image } from '@/components/ui/image';
 import { Text } from '@/components/ui/text';
 import { useSession } from '@/context/session';
 import { View } from 'react-native';
+import RadialGradient from 'react-native-radial-gradient';
 
 export default function SignIn() {
     const { signInWithGoogle } = useSession();
 
     return (
-        <View className="flex-1">
-            <Button onPress={signInWithGoogle} className="bg-primary-default">
-                <Text>Google 로그인</Text>
-            </Button>
+        <View className="flex-1 px-6 pt-36 pb-20 justify-between">
+            <Box className="flex-col gap-y-5">
+                <Box className="relative">
+                    <RadialGradient
+                        className="absolute -left-[120px] -top-[120px]  h-[280px] w-[280px]"
+                        colors={['#009883', 'transparent']}
+                        stops={[0, 1]}
+                        radius={100}
+                    />
+                    <Image
+                        source={require('../assets/images/logo.png')}
+                        className="h-10 w-10"
+                    />
+                </Box>
+
+                <Text className="text-4xl font-bold">
+                    안녕하세요{'\n'}
+                    REFLASH입니다.
+                </Text>
+                <Text className="text-2xl">
+                    간편 로그인 후 {'\n'}
+                    학습을 시작해보세요.
+                </Text>
+            </Box>
+            <Box className="flex-col gap-y-2">
+                <Button
+                    onPress={signInWithGoogle}
+                    className="bg-primary-default"
+                >
+                    <Text>Google 로그인</Text>
+                </Button>
+                <Button
+                    onPress={signInWithGoogle}
+                    className="bg-primary-default"
+                >
+                    <Text>IOS 로그인</Text>
+                </Button>
+            </Box>
         </View>
     );
 }
