@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native';
 export default function Home() {
     return (
         <SafeAreaView className="flex-1">
-            <Box className="flex-1 bg-black h-[100vh]">
+            <Box className="flex-1 bg-background-dark h-[100vh]">
                 <Text className="text-typography-400 mt-2">Hello World</Text>
             </Box>
         </SafeAreaView>

@@ -1,5 +1,5 @@
+import OAuthButton from '@/components/sign/OAuthButton';
 import { Box } from '@/components/ui/box';
-import { Button } from '@/components/ui/button';
 import { Image } from '@/components/ui/image';
 import { Text } from '@/components/ui/text';
 import { useSession } from '@/context/session';
@@ -35,18 +35,8 @@ export default function SignIn() {
                 </Text>
             </Box>
             <Box className="flex-col gap-y-2">
-                <Button
-                    onPress={signInWithGoogle}
-                    className="bg-primary-default"
-                >
-                    <Text>Google 로그인</Text>
-                </Button>
-                <Button
-                    onPress={signInWithGoogle}
-                    className="bg-primary-default"
-                >
-                    <Text>IOS 로그인</Text>
-                </Button>
+                <OAuthButton provider="google" onPress={signInWithGoogle} />
+                <OAuthButton provider="apple" />
             </Box>
         </View>
     );

@@ -1,8 +1,15 @@
 'use client';
 import { vars } from 'nativewind';
 
+export const colors = {
+    '--color-primary-default': '#009883',
+    '--color-background-default': '#1C1C1E',
+};
+
 export const config = {
     light: vars({
+        ...colors,
+
         /* Primary */
         '--color-primary-0': '179 179 179',
         '--color-primary-50': '153 153 153',
@@ -157,7 +164,7 @@ export const config = {
     }),
     dark: vars({
         /* Primary */
-        '--color-primary-default': '#009883',
+        ...colors,
 
         '--color-primary-0': '166 166 166',
         '--color-primary-50': '175 175 175',

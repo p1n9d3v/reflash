@@ -1,4 +1,4 @@
-import { onAuthChanged, signInWithGoogle } from '@/apis/auth';
+import { onAuthChanged, signInWithGoogle, signOut } from '@/apis/auth';
 import { useMutation } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import {
@@ -39,6 +39,13 @@ export function SessionProvider({ children }: PropsWithChildren) {
         },
     });
 
+    const signOutMutation = useMutation({
+        mutationFn: signOut,
+        onError: (error) => {
+            Alert.alert('에러', error.message);
+        },
+    });
+
     useEffect(() => {
         console.log('user', user);
         if (!user) {
@@ -50,7 +57,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
     useEffect(() => {
         onAuthChanged((user) => {
-            setUser(null);
+            setUser(user as User | null);
         });
     }, []);
 
@@ -58,9 +65,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
         <AuthContext.Provider
             value={{
                 signInWithGoogle: signInWithGoogleMutation.mutate,
-                signOut: () => {
-                    console.log('signOut');
-                },
+                signOut: signOutMutation.mutate,
                 user,
             }}
         >
