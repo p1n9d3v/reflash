@@ -1,29 +1,23 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {
-    DarkTheme,
-    DefaultTheme,
-    ThemeProvider,
-} from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
-import { Slot } from 'expo-router';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useFonts } from 'expo-font';
+import { Slot } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
 
-import '../global.css';
 import { SessionProvider } from '@/context/session';
+import '../global.css';
 
 export {
     // Catch any errors thrown by the Layout component.
     ErrorBoundary,
 } from 'expo-router';
 
-// export const unstable_settings = {
-//
-//   // Ensure that reloading on `/modal` keeps a back button present.
-//   initialRouteName: "gluestack",
-// };
+export const unstable_settings = {
+    // Ensure that reloading on `/modal` keeps a back button present.
+    initialRouteName: '/',
+};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -51,20 +45,12 @@ export default function RootLayout() {
 const queryClient = new QueryClient();
 
 function RootLayoutNav() {
-    const [colorScheme, setColorScheme] = useState('light');
-
     return (
         <QueryClientProvider client={queryClient}>
-            <GluestackUIProvider
-                mode={colorScheme === 'dark' ? 'dark' : 'light'}
-            >
-                <ThemeProvider
-                    value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-                >
-                    <SessionProvider>
-                        <Slot />
-                    </SessionProvider>
-                </ThemeProvider>
+            <GluestackUIProvider mode="dark">
+                <SessionProvider>
+                    <Slot />
+                </SessionProvider>
             </GluestackUIProvider>
         </QueryClientProvider>
     );

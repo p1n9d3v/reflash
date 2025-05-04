@@ -1,6 +1,7 @@
 {
     "expo": {
         "name": "client",
+        "backgroundColor": "#1C1C1E",
         "slug": "client",
         "version": "1.0.0",
         "orientation": "portrait",

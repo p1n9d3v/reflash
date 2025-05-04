@@ -50,7 +50,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
     useEffect(() => {
         onAuthChanged((user) => {
-            setUser(user as User | null);
+            setUser(null);
         });
     }, []);
 
