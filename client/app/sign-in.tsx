@@ -27,7 +27,7 @@ export default function SignIn() {
 
                 <Text className="text-4xl font-bold">
                     안녕하세요{'\n'}
-                    REFLASH입니다.
+                    BRAINI입니다.
                 </Text>
                 <Text className="text-2xl">
                     간편 로그인 후 {'\n'}
