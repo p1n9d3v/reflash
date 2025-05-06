@@ -1,7 +1,9 @@
-export interface ReviewHistory {
-    id: string;
-    cardId: string;
-    reviewDate: Date;
-    response: 'easy' | 'good' | 'hard' | 'again';
-    timeSpent: number;
+import {Timestamp} from "@react-native-firebase/firestore";
+
+export interface ReviewHistoryItem {
+    date: Timestamp;
+    response: number;
+    timeSpentMs: number;
+    previousLevel: number;
+    newLevel: number;
 }

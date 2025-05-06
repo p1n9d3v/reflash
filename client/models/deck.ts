@@ -1,11 +1,12 @@
+import {Timestamp} from "@react-native-firebase/firestore";
+
 export interface Deck {
     id: string;
     userId: string;
     name: string;
-    description?: string;
+    description: string;
     category: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
     cardCount: number;
-    lastReviewedAt?: Date;
 }
