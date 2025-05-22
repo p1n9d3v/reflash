@@ -47,11 +47,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
     });
 
     useEffect(() => {
-        console.log('user', user);
         if (!user) {
             router.replace('/sign-in');
         } else {
-            router.replace('/(app)');
+            router.replace('/(app)/home');
         }
     }, [user]);
 

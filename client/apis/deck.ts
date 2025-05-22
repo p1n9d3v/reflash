@@ -1,25 +1,28 @@
-import {Deck} from "@/models/deck";
-import {firestore} from "@/firebase-config";
-import {COLLECTIONS} from "@/firebase/collections";
-import {Timestamp} from "@react-native-firebase/firestore";
+import { Deck } from '@/models/deck';
+import { firestore } from '@/firebase-config';
+import { COLLECTIONS } from '@/firebase/collections';
+import { Timestamp } from '@react-native-firebase/firestore';
 
 export const getUserDecks = async (userId: string): Promise<Deck[]> => {
-    try{
+    try {
         const snapshot = await firestore
             .collection(COLLECTIONS.DECKS)
             .where('userId', '==', userId)
             .orderBy('updatedAt', 'desc')
             .get();
 
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-        } as Deck));
-    }catch (error){
+        return snapshot.docs.map(
+            (doc) =>
+                ({
+                    id: doc.id,
+                    ...doc.data(),
+                }) as Deck,
+        );
+    } catch (error) {
         console.error(error);
         throw error;
     }
-}
+};
 
 export const getDeck = async (deckId: string): Promise<Deck | null> => {
     try {
@@ -40,7 +43,10 @@ export const getDeck = async (deckId: string): Promise<Deck | null> => {
     }
 };
 
-export const createDeck = async (userId: string, data: Partial<Deck>): Promise<Deck> => {
+export const createDeck = async (
+    userId: string,
+    data: Partial<Deck>,
+): Promise<Deck> => {
     try {
         const now = Timestamp.now();
         const newDeck = {
@@ -53,7 +59,9 @@ export const createDeck = async (userId: string, data: Partial<Deck>): Promise<D
             cardCount: 0,
         };
 
-        const docRef = await firestore.collection(COLLECTIONS.DECKS).add(newDeck);
+        const docRef = await firestore
+            .collection(COLLECTIONS.DECKS)
+            .add(newDeck);
         return { id: docRef.id, ...newDeck } as Deck;
     } catch (error) {
         console.error(error);
@@ -61,14 +69,20 @@ export const createDeck = async (userId: string, data: Partial<Deck>): Promise<D
     }
 };
 
-export const updateDeck = async (deckId: string, data: Partial<Deck>): Promise<void> => {
+export const updateDeck = async (
+    deckId: string,
+    data: Partial<Deck>,
+): Promise<void> => {
     try {
         const updateData = {
             ...data,
             updatedAt: new Date(),
         };
 
-        await firestore.collection(COLLECTIONS.DECKS).doc(deckId).update(updateData);
+        await firestore
+            .collection(COLLECTIONS.DECKS)
+            .doc(deckId)
+            .update(updateData);
     } catch (error) {
         console.error(error);
         throw error;
@@ -77,17 +91,19 @@ export const updateDeck = async (deckId: string, data: Partial<Deck>): Promise<v
 
 export const deleteDeck = async (deckId: string): Promise<void> => {
     try {
-        await firestore.runTransaction(async transaction => {
+        await firestore.runTransaction(async (transaction) => {
             const cardsSnapshot = await firestore
                 .collection(COLLECTIONS.CARDS)
                 .where('deckId', '==', deckId)
                 .get();
 
-            cardsSnapshot.docs.forEach(doc => {
+            cardsSnapshot.docs.forEach((doc) => {
                 transaction.delete(doc.ref);
             });
 
-            transaction.delete(firestore.collection(COLLECTIONS.DECKS).doc(deckId));
+            transaction.delete(
+                firestore.collection(COLLECTIONS.DECKS).doc(deckId),
+            );
         });
     } catch (error) {
         console.error(error);

@@ -4,6 +4,9 @@ import { vars } from 'nativewind';
 export const colors = {
     '--color-primary-default': '#009883',
     '--color-background-default': '#1C1C1E',
+    '--color-white': '#FFFFFF',
+    '--color-grey-700': '#25252a',
+    '--color-grey-200': '#d1d1d5',
 };
 
 export const config = {
