@@ -1,40 +1,91 @@
-import { Box } from '@/components/ui/box';
-import { Button, ButtonText } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
-import React from 'react';
-import { FlatList, View } from 'react-native';
+import { Box } from "@/components/ui/box";
+import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
+import { colors } from "@/components/ui/gluestack-ui-provider/config";
+import { Text } from "@/components/ui/text";
+import { ChartLine, ChevronDown, ChevronRight } from "lucide-react-native";
+import { TouchableOpacity } from "react-native";
+import { Calendar } from "react-native-calendars";
+import {
+    Modal,
+    ModalBackdrop,
+    ModalContent,
+    ModalCloseButton,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+} from "@/components/ui/modal";
+import { useState } from "react";
+import { Heading } from "@/components/ui/heading";
+import { X } from "lucide-react-native";
 
-export default function HomeScreen() {
+export default function Home() {
+    const [showModal, setShowModal] = useState(false);
     return (
-        <View className="flex-1 bg-background-dark">
-            <Button>
-                <ButtonText>로그아웃</ButtonText>
+        <Box className="flex-1 bg-dark-default">
+            <Box className="flex-row justify-between p-6">
+                <TouchableOpacity
+                    className="flex-row items-center gap-x-2"
+                    activeOpacity={0.8}
+                    onPress={() => setShowModal(true)}
+                >
+                    <Text className="text-xl font-bold">2025년 3월</Text>
+                    <ChevronDown color="#ffffff" size={24} />
+                </TouchableOpacity>
+
+                <Modal
+                    isOpen={showModal}
+                    onClose={() => {
+                        setShowModal(false);
+                    }}
+                    size="md"
+                >
+                    <ModalBackdrop />
+                    <ModalContent className="bg-dark-default">
+                        <ModalHeader>
+                            <Heading size="md" className="text-typography-950">
+                                Calendar
+                            </Heading>
+                            <ModalCloseButton>
+                                <X />
+                            </ModalCloseButton>
+                        </ModalHeader>
+                        <ModalBody>
+                            <Calendar
+                                onDayPress={(day: any) => {
+                                    console.log("selected day", day);
+                                }}
+                                theme={{
+                                    backgroudColor:
+                                        colors["--color-background-default"],
+                                    calendarBackground:
+                                        colors["--color-background-default"],
+                                    textSelectionTitleColor:
+                                        colors["--color-primary-default"],
+                                    selectedDayTextColor:
+                                        colors["--color-primary-default"],
+                                    dayTextColor: "#fff",
+                                    todayTextColor:
+                                        colors["--color-primary-default"],
+                                    monthTextColor: "#fff",
+                                    arrowColor:
+                                        colors["--color-primary-default"],
+                                }}
+                            />
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+                <ChartLine color="#ffffff" size={24} />
+            </Box>
+            <Box></Box>
+            <Button
+                variant="solid"
+                className="h-14 flex-row items-center justify-center bg-primary-default data-[active=true]:bg-[#007B6D]"
+            >
+                <ButtonText className="text-xl font-bold text-gray-50 data-[active=true]:text-gray-50">
+                    오늘 학습 시작
+                </ButtonText>
+                <ButtonIcon as={ChevronRight} color="#ffffff" />
             </Button>
-            {
-                <FlatList
-                    data={Array.from({ length: 100 }, () => Math.random())}
-                    renderItem={({ item }) => (
-                        <Box className="h-[100px] w-full">
-                            <Text>
-                                Lorem Ipsum is simply dummy text of | the
-                                printing and typesetting industry. Lorem Ipsum
-                                has been the industry's standard dummy text ever
-                                since the 1500s, when an unknown printer took a
-                                galley of type and scrambled it to make a type
-                                specimen book. It has survived not only five
-                                centuries, but also the leap into electronic
-                                typesetting, remaining essentially unchanged. It
-                                was popularised in the 1960s with the release of
-                                Letraset sheets containing Lorem Ipsum passages,
-                                and more recently with desktop publishing
-                                software like Aldus PageMaker including versions
-                                of Lorem Ipsum.
-                            </Text>
-                        </Box>
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            }
-        </View>
+        </Box>
     );
 }
