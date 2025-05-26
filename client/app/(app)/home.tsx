@@ -1,22 +1,20 @@
 import { Box } from "@/components/ui/box";
 import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
 import { colors } from "@/components/ui/gluestack-ui-provider/config";
-import { Text } from "@/components/ui/text";
-import { ChartLine, ChevronDown, ChevronRight } from "lucide-react-native";
-import { TouchableOpacity } from "react-native";
-import { Calendar } from "react-native-calendars";
+import { Heading } from "@/components/ui/heading";
 import {
     Modal,
     ModalBackdrop,
-    ModalContent,
-    ModalCloseButton,
-    ModalHeader,
     ModalBody,
-    ModalFooter,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
 } from "@/components/ui/modal";
+import { Text } from "@/components/ui/text";
+import { ChartLine, ChevronDown, ChevronRight, X } from "lucide-react-native";
 import { useState } from "react";
-import { Heading } from "@/components/ui/heading";
-import { X } from "lucide-react-native";
+import { TouchableOpacity } from "react-native";
+import { Calendar } from "react-native-calendars";
 
 export default function Home() {
     const [showModal, setShowModal] = useState(false);
@@ -86,6 +84,7 @@ export default function Home() {
                 </ButtonText>
                 <ButtonIcon as={ChevronRight} color="#ffffff" />
             </Button>
+            <Text></Text>
         </Box>
     );
 }
