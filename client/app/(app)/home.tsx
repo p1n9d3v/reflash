@@ -17,6 +17,7 @@ import {
     getMarkedDates,
     type StudyItem,
 } from "@/mocks/agendaItems";
+import { useRouter } from "expo-router";
 
 const AgendaItem = ({ item }: { item: StudyItem }) => {
     return (
@@ -44,6 +45,8 @@ export default function Home() {
     const calendarRef = useRef<any>(null);
     const rotation = useRef(new Animated.Value(0));
 
+    const router = useRouter();
+
     const today = new Date().toISOString().split("T")[0];
     const currentMonth = new Date().toLocaleDateString("ko-KR", {
         year: "numeric",
@@ -60,6 +63,10 @@ export default function Home() {
         }).start();
     }, []);
 
+    const openAchievementModal = () => {
+        router.push("/(app)/achievement");
+    };
+
     const renderHeader = useCallback(
         (date?: any) => {
             const rotationInDegrees = rotation.current.interpolate({
@@ -73,7 +80,7 @@ export default function Home() {
 
             return (
                 <Box className="p-6">
-                    <Box className="flex-row items-center w-full">
+                    <Box className="w-full flex-row items-center">
                         <TouchableOpacity
                             className="flex-row items-center gap-x-2"
                             activeOpacity={0.8}
@@ -91,9 +98,7 @@ export default function Home() {
                             </Animated.View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity
-                            onPress={() => setShowCalendarModal(true)}
-                        >
+                        <TouchableOpacity onPress={openAchievementModal}>
                             <ChartLine color="#ffffff" size={24} />
                         </TouchableOpacity>
                     </Box>
@@ -193,4 +198,3 @@ const styles = StyleSheet.create({
         padding: 16,
     },
 });
-

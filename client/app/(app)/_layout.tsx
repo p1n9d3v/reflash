@@ -31,21 +31,38 @@ function RootLayoutNav() {
                     headerStyle: {
                         backgroundColor: colors["--color-background-default"],
                     },
-                    headerTitleAlign: "left",
-                    headerTitle: () => null, // 기본 타이틀 제거
-                    headerLeft: () => (
-                        <Box className="flex-row items-center gap-x-2">
-                            <Image
-                                source={require("assets/images/logo.png")}
-                                className="h-6 w-6"
-                            />
-                            <Text className="text-3xl font-black text-white">
-                                BRAINI
-                            </Text>
-                        </Box>
-                    ),
                 }}
-            />
+            >
+                <Stack.Screen
+                    name="achievement"
+                    options={{
+                        presentation: "modal",
+                        headerTitle: "학습 성취 그래프",
+                        headerTitleStyle: {
+                            color: colors["--color-white"],
+                        },
+                        headerBackButtonDisplayMode: "minimal",
+                    }}
+                />
+                <Stack.Screen
+                    name="home"
+                    options={{
+                        headerTitleAlign: "left",
+                        headerTitle: () => null, // 기본 타이틀 제거
+                        headerLeft: () => (
+                            <Box className="flex-row items-center gap-x-2">
+                                <Image
+                                    source={require("assets/images/logo.png")}
+                                    className="h-6 w-6"
+                                />
+                                <Text className="text-3xl font-black text-white">
+                                    BRAINI
+                                </Text>
+                            </Box>
+                        ),
+                    }}
+                />
+            </Stack>
 
             <Box
                 style={{
