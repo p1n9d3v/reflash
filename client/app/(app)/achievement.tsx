@@ -1,7 +1,6 @@
 import {
     Accordion,
     AccordionContent,
-    AccordionContentText,
     AccordionHeader,
     AccordionIcon,
     AccordionItem,
@@ -9,31 +8,41 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Box } from "@/components/ui/box";
-import { Divider } from "@/components/ui/divider";
+import { colors } from "@/components/ui/gluestack-ui-provider/config";
+import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { VStack } from "@/components/ui/vstack";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react-native";
+import { useState } from "react";
+import { Text } from "react-native";
+import * as Progress from "react-native-progress";
 
 interface AchievementScreenProps {}
 
 export default function AchievementScreen({}: AchievementScreenProps) {
+    const [progressValue, setProgressValue] = useState(0.4);
+
+    const goalTextColorClass =
+        progressValue === 1 ? "text-primary-default" : "text-gray-600";
+
     return (
-        <Box className="flex-1 bg-dark-default">
+        <Box className="flex-1 bg-dark-secondary">
             <Accordion
                 size="md"
                 variant="filled"
                 type="single"
                 isCollapsible={true}
                 isDisabled={false}
-                className="bg-transparent"
             >
                 <AccordionItem value="a">
-                    <AccordionHeader className="bg-dark-default">
+                    <AccordionHeader className="bg-dark-secondary">
                         <AccordionTrigger>
                             {({ isExpanded }) => {
                                 return (
                                     <>
-                                        <AccordionTitleText className="text-xl">
+                                        <Text className="text-xl text-white">
                                             학습 이름
-                                        </AccordionTitleText>
+                                        </Text>
                                         {isExpanded ? (
                                             <AccordionIcon
                                                 as={ChevronUpIcon}
@@ -52,12 +61,87 @@ export default function AchievementScreen({}: AchievementScreenProps) {
                             }}
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent>
-                        <AccordionContentText>
-                            To place an order, simply select the products you
-                            want, proceed to checkout, provide shipping and
-                            payment information, and finalize your purchase.
-                        </AccordionContentText>
+                    <AccordionContent className="bg-dark-secondary py-10">
+                        <Box>
+                            <Heading className="text-xl font-bold text-white">
+                                학습 완료율
+                            </Heading>
+                            <Box className="relative mt-2.5 h-10 w-full">
+                                <Progress.Bar
+                                    progress={progressValue}
+                                    color={colors["--color-primary-default"]}
+                                    width={null}
+                                />
+                                <Text
+                                    style={{
+                                        left: `${progressValue * 100}%`,
+                                        transform: [{ translateX: -10 }],
+                                    }}
+                                    className="absolute bottom-0 text-sm font-bold text-primary-default"
+                                >
+                                    {`${Math.round(progressValue * 100)}%`}
+                                </Text>
+
+                                <Text
+                                    className={`absolute bottom-0 right-0 text-sm ${goalTextColorClass}`}
+                                >
+                                    Goal
+                                </Text>
+                            </Box>
+                        </Box>
+                        <Box className="flex-col gap-6">
+                            <Heading className="text-xl">오답 노트</Heading>
+                            <HStack>
+                                <VStack
+                                    space="xl"
+                                    className="flex-1 justify-between"
+                                >
+                                    <Box>
+                                        <Text className="text-gray-500">
+                                            학습 횟수
+                                        </Text>
+                                        <Text className="mt-2 text-lg font-bold text-white">
+                                            6회
+                                        </Text>
+                                    </Box>
+                                    <Box>
+                                        <Text className="text-gray-500">
+                                            전체 문제 수
+                                        </Text>
+                                        <Text className="mt-2 text-lg font-bold text-white">
+                                            6회
+                                        </Text>
+                                    </Box>
+                                    <Box>
+                                        <Text className="text-gray-500">
+                                            평균 오답 수
+                                        </Text>
+                                        <Text className="mt-2 text-lg font-bold text-white">
+                                            6회
+                                        </Text>
+                                    </Box>
+                                </VStack>
+                                <Box>
+                                    <Progress.Circle
+                                        progress={progressValue}
+                                        size={200}
+                                        thickness={30}
+                                        color={
+                                            colors["--color-primary-default"]
+                                        }
+                                        borderWidth={0}
+                                        unfilledColor={
+                                            colors["--color-grey-700"]
+                                        }
+                                        strokeCap="round"
+                                        showsText={true}
+                                        formatText={() => {
+                                            return `${Math.round(progressValue * 100)}%`;
+                                        }}
+                                    />
+                                </Box>
+                            </HStack>
+                        </Box>
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>

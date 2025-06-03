@@ -173,6 +173,7 @@ module.exports = {
                 },
                 dark: {
                     default: "var(--color-background-default)",
+                    secondary: "var(--color-background-secondary)",
                 },
             },
             fontFamily: {
