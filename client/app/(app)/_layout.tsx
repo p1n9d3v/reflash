@@ -43,8 +43,8 @@ function RootLayoutNav() {
                     name="home"
                     options={{
                         header: () => (
-                            <SafeAreaView className="h-[72px] bg-grey-800">
-                                <Box className="p-6">
+                            <SafeAreaView className="bg-grey-800">
+                                <Box className="h-[72px] p-6">
                                     <Image
                                         source={require("assets/images/header-logo.png")}
                                         className="h-[24px] w-[87px]"

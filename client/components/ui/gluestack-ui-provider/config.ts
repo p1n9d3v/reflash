@@ -20,6 +20,7 @@ export const colors = {
     /* Focus Ring Indicator  */
     /* Grey */
     "--color-grey-50": "#F9F9FD",
+    "--color-grey-100": "#FAFAFA",
     "--color-grey-200": "#D1D1D5",
     "--color-grey-300": "#B1B1B7",
     "--color-grey-700": "#25252A",

@@ -1,22 +1,17 @@
-import { ChartLine, ChevronDown, ChevronRight, X } from "lucide-react-native";
-import { useState, useCallback, useRef } from "react";
-import { TouchableOpacity, StyleSheet, Animated, Easing } from "react-native";
+import { ChartLine, ChevronDown } from "lucide-react-native";
+import { useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import {
     CalendarProvider,
     ExpandableCalendar,
-    AgendaList,
+    WeekCalendar,
 } from "react-native-calendars";
-
 import { Box } from "@/components/ui/box";
-import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
-import {
-    agendaItems,
-    getMarkedDates,
-    type StudyItem,
-} from "@/mocks/agendaItems";
+import { type StudyItem } from "@/mocks/agendaItems";
 import { useRouter } from "expo-router";
+import { colors } from "@/components/ui/gluestack-ui-provider/config";
 
 const AgendaItem = ({ item }: { item: StudyItem }) => {
     return (
@@ -38,85 +33,74 @@ const AgendaItem = ({ item }: { item: StudyItem }) => {
     );
 };
 
+const date = new Date();
+
+const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+};
+
 export default function Home() {
-    const [showCalendarModal, setShowCalendarModal] = useState(false);
-    const marked = useRef(getMarkedDates());
-    const calendarRef = useRef<any>(null);
-    const rotation = useRef(new Animated.Value(0));
-
+    const displayYearMonth = `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
     const router = useRouter();
+    const [showCalendar, setShowCalendar] = useState(false);
 
-    const today = new Date().toISOString().split("T")[0];
-    const currentMonth = new Date().toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-    });
-
-    const toggleCalendarExpansion = useCallback(() => {
-        const isOpen = calendarRef.current?.toggleCalendarPosition();
-        Animated.timing(rotation.current, {
-            toValue: isOpen ? 1 : 0,
-            duration: 200,
-            useNativeDriver: true,
-            easing: Easing.out(Easing.ease),
-        }).start();
-    }, []);
-
-    const openAchievementModal = () => {
+    const handleOpenAchievementModal = () => {
         router.push("/(app)/achievement");
     };
 
-    const renderHeader = useCallback(
-        (date?: any) => {
-            const rotationInDegrees = rotation.current.interpolate({
-                inputRange: [0, 1],
-                outputRange: ["0deg", "-180deg"],
-            });
-
-            const displayMonth = date
-                ? date.toString("yyyy년 M월")
-                : currentMonth.replace("년", "년 ");
-
-            return (
-                <Box className="p-6">
-                    <Box className="text-grey w-full flex-row items-center">
-                        <TouchableOpacity
-                            className="flex-row items-center gap-x-2"
-                            activeOpacity={0.8}
-                            onPress={toggleCalendarExpansion}
-                        >
-                            <Text className="text-xl font-bold">
-                                {displayMonth}
-                            </Text>
-                            <Animated.View
-                                style={{
-                                    transform: [{ rotate: rotationInDegrees }],
-                                }}
-                            >
-                                <ChevronDown color="#ffffff" size={24} />
-                            </Animated.View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity onPress={openAchievementModal}>
-                            <ChartLine color="#ffffff" size={24} />
-                        </TouchableOpacity>
-                    </Box>
-                </Box>
-            );
-        },
-        [currentMonth, toggleCalendarExpansion],
-    );
-
-    const onCalendarToggled = useCallback((isOpen: boolean) => {
-        rotation.current.setValue(isOpen ? 1 : 0);
-    }, []);
-
-    const renderItem = useCallback(({ item }: { item: StudyItem }) => {
-        return <AgendaItem item={item} />;
-    }, []);
+    const handleToggleCalendar = () => {
+        setShowCalendar((prev) => !prev);
+    };
 
     return (
         <Box className="flex-1 bg-grey-800">
+            <Box className="flex-row items-center justify-between px-6">
+                <TouchableOpacity
+                    className="flex-row items-center gap-x-2"
+                    activeOpacity={0.8}
+                    onPress={handleToggleCalendar}
+                >
+                    <Text className="text-2xl font-bold text-grey-100">
+                        {displayYearMonth}
+                    </Text>
+                    <ChevronDown color="#ffffff" size={24} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={handleOpenAchievementModal}>
+                    <ChartLine color="#ffffff" size={24} />
+                </TouchableOpacity>
+            </Box>
+            <Box className="my-4">
+                <CalendarProvider date={formatDate(date)}>
+                    {showCalendar && (
+                        <ExpandableCalendar
+                            theme={{
+                                calendarBackground: colors["--color-grey-800"],
+                                textSectionTitleColor:
+                                    colors["--color-primary-300"],
+                                selectedDayTextColor: "#ffffff",
+                                selectedDayBackgroundColor:
+                                    colors["--color-primary-300"],
+                                dayTextColor: "#ffffff",
+                                todayTextColor: colors["--color-primary-300"],
+                                monthTextColor: "#ffffff",
+                                arrowColor: colors["--color-primary-300"],
+                                textDayFontWeight: "300",
+                                textMonthFontWeight: "bold",
+                                textDayHeaderFontWeight: "300",
+                                textDayFontSize: 16,
+                                textMonthFontSize: 16,
+                                textDayHeaderFontSize: 13,
+                            }}
+                            allowShadow={false}
+                        />
+                    )}
+                </CalendarProvider>
+            </Box>
             {/* <CalendarProvider */}
             {/*     date={today} */}
             {/*     theme={{ */}
@@ -131,24 +115,16 @@ export default function Home() {
             {/*         firstDay={1} */}
             {/*         markedDates={marked.current} */}
             {/*         theme={{ */}
-            {/*             backgroundColor: colors["--color-background-default"], */}
-            {/*             calendarBackground: */}
-            {/*                 colors["--color-background-default"], */}
-            {/*             textSectionTitleColor: */}
-            {/*                 colors["--color-primary-default"], */}
-            {/*             selectedDayTextColor: "#ffffff", */}
-            {/*             selectedDayBackgroundColor: */}
-            {/*                 colors["--color-primary-default"], */}
-            {/*             dayTextColor: "#ffffff", */}
-            {/*             todayTextColor: colors["--color-primary-default"], */}
-            {/*             monthTextColor: "#ffffff", */}
-            {/*             arrowColor: colors["--color-primary-default"], */}
-            {/*             textDayFontWeight: "300", */}
-            {/*             textMonthFontWeight: "bold", */}
-            {/*             textDayHeaderFontWeight: "300", */}
-            {/*             textDayFontSize: 16, */}
-            {/*             textMonthFontSize: 16, */}
-            {/*             textDayHeaderFontSize: 13, */}
+            {/* backgroundColor: colors["--color-background-default"], */}
+            {/* calendarBackground: colors["--color-background-default"], */}
+            {/* textSectionTitleColor: colors["--color-primary-default"], */}
+            {/* selectedDayTextColor: "#ffffff", selectedDayBackgroundColor: */}
+            {/* colors["--color-primary-default"], dayTextColor: "#ffffff", */}
+            {/* todayTextColor: colors["--color-primary-default"], monthTextColor: */}
+            {/* "#ffffff", arrowColor: colors["--color-primary-default"], */}
+            {/* textDayFontWeight: "300", textMonthFontWeight: "bold", */}
+            {/* textDayHeaderFontWeight: "300", textDayFontSize: 16, */}
+            {/* textMonthFontSize: 16, textDayHeaderFontSize: 13, */}
             {/*         }} */}
             {/*         initialPosition={undefined} */}
             {/*     /> */}
