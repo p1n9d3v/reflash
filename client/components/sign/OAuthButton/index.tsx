@@ -1,16 +1,16 @@
-import { Button } from '@/components/ui/button';
-import { Image } from '@/components/ui/image';
-import { Text } from '@/components/ui/text';
-import { ComponentProps } from 'react';
+import { Button } from "@/components/ui/button";
+import { Image } from "@/components/ui/image";
+import { Text } from "@/components/ui/text";
+import { ComponentProps } from "react";
 
 interface OAuthButtonProps extends ComponentProps<typeof Button> {
-    provider: 'google' | 'apple';
+    provider: "google" | "apple";
 }
 
 export default function OAuthButton(props: OAuthButtonProps) {
     const { provider, ...rest } = props;
 
-    if (provider === 'google') {
+    if (provider === "google") {
         return (
             <Button
                 className="justify-between bg-white data-[active=true]:bg-white"
@@ -18,8 +18,8 @@ export default function OAuthButton(props: OAuthButtonProps) {
                 {...rest}
             >
                 <Image
-                    source={require('/assets/images/google.png')}
-                    className="h-4 w-4"
+                    source={require("/assets/images/google.png")}
+                    className="h-6 w-6"
                 />
                 <Text className="flex-1 text-center text-black">
                     Google로 로그인하기
@@ -35,8 +35,8 @@ export default function OAuthButton(props: OAuthButtonProps) {
             {...rest}
         >
             <Image
-                source={require('/assets/images/apple.png')}
-                className="h-4 w-4"
+                source={require("/assets/images/apple.png")}
+                className="h-6 w-6"
             />
             <Text className="flex-1 text-center text-white">
                 Apple로 로그인하기

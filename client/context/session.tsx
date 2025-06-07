@@ -48,11 +48,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
     useEffect(() => {
         router.replace("/(app)/home");
-        // if (!user) {
-        //     router.replace('/sign-in');
-        // } else {
-        //     router.replace('/(app)/home');
-        // }
+        if (!user) {
+            router.replace("/sign-in");
+        } else {
+            router.replace("/(app)/home");
+        }
     }, [user]);
 
     useEffect(() => {

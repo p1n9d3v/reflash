@@ -4,7 +4,6 @@ import {
     AccordionHeader,
     AccordionIcon,
     AccordionItem,
-    AccordionTitleText,
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Box } from "@/components/ui/box";

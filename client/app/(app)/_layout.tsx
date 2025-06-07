@@ -1,11 +1,10 @@
 import { Box } from "@/components/ui/box";
-import { colors } from "@/components/ui/gluestack-ui-provider/config";
 import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { BlurView } from "expo-blur";
 import { Stack, usePathname, useRouter } from "expo-router";
 import { Dimensions, Platform, TouchableOpacity } from "react-native";
-import { BlurView } from "expo-blur";
 
 export default function RootLayout() {
     return <RootLayoutNav />;
@@ -27,20 +26,22 @@ function RootLayoutNav() {
         <>
             <Stack
                 initialRouteName="home"
-                screenOptions={{
-                    headerStyle: {
-                        backgroundColor: colors["--color-background-default"],
-                    },
-                }}
+                screenOptions={
+                    {
+                        // headerStyle: {
+                        //     backgroundColor: colors["--color-background-default"],
+                        // },
+                    }
+                }
             >
                 <Stack.Screen
                     name="achievement"
                     options={{
                         presentation: "modal",
                         headerTitle: "학습 성취 그래프",
-                        headerTitleStyle: {
-                            color: colors["--color-white"],
-                        },
+                        // headerTitleStyle: {
+                        //     color: colors["--color-white"],
+                        // },
                         headerBackButtonDisplayMode: "minimal",
                     }}
                 />
@@ -85,7 +86,6 @@ function RootLayoutNav() {
                         alignItems: "center",
                         justifyContent: "space-evenly", // 균등한 간격으로 배치
                         borderWidth: 2,
-                        borderColor: colors["--color-grey-700"],
                     }}
                     tint="dark"
                     intensity={Platform.OS === "android" ? 90 : 5} // android 100 , ios 10
@@ -103,18 +103,9 @@ function RootLayoutNav() {
                                 }}
                                 onPress={() => router.push(tab.path)}
                             >
-                                <FontAwesome
-                                    size={28}
-                                    name={tab.icon}
-                                    color={
-                                        isActive
-                                            ? colors["--color-primary-default"]
-                                            : colors["--color-grey-200"]
-                                    }
-                                />
+                                <FontAwesome size={28} name={tab.icon} />
                                 <Text
                                     style={{
-                                        color: colors["--color-white"],
                                         marginTop: 5,
                                         fontSize: 12,
                                     }}

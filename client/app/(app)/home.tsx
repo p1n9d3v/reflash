@@ -80,7 +80,7 @@ export default function Home() {
 
             return (
                 <Box className="p-6">
-                    <Box className="w-full flex-row items-center">
+                    <Box className="text-grey w-full flex-row items-center">
                         <TouchableOpacity
                             className="flex-row items-center gap-x-2"
                             activeOpacity={0.8}
@@ -117,80 +117,78 @@ export default function Home() {
     }, []);
 
     return (
-        <Box className="flex-1 bg-dark-default">
-            <CalendarProvider
-                date={today}
-                theme={{
-                    todayButtonTextColor: colors["--color-primary-default"],
-                }}
-                showTodayButton
-            >
-                <ExpandableCalendar
-                    ref={calendarRef}
-                    renderHeader={renderHeader}
-                    onCalendarToggled={onCalendarToggled}
-                    firstDay={1}
-                    markedDates={marked.current}
-                    theme={{
-                        backgroundColor: colors["--color-background-default"],
-                        calendarBackground:
-                            colors["--color-background-default"],
-                        textSectionTitleColor:
-                            colors["--color-primary-default"],
-                        selectedDayTextColor: "#ffffff",
-                        selectedDayBackgroundColor:
-                            colors["--color-primary-default"],
-                        dayTextColor: "#ffffff",
-                        todayTextColor: colors["--color-primary-default"],
-                        monthTextColor: "#ffffff",
-                        arrowColor: colors["--color-primary-default"],
-                        textDayFontWeight: "300",
-                        textMonthFontWeight: "bold",
-                        textDayHeaderFontWeight: "300",
-                        textDayFontSize: 16,
-                        textMonthFontSize: 16,
-                        textDayHeaderFontSize: 13,
-                    }}
-                    initialPosition={undefined}
-                />
-
-                <Box className="px-6 pb-4">
-                    <Button
-                        variant="solid"
-                        className="h-14 flex-row items-center justify-center bg-primary-default data-[active=true]:bg-[#007B6D]"
-                    >
-                        <ButtonText className="text-xl font-bold text-gray-50 data-[active=true]:text-gray-50">
-                            오늘 학습 시작
-                        </ButtonText>
-                        <ButtonIcon as={ChevronRight} color="#ffffff" />
-                    </Button>
-                </Box>
-
-                <Box className="flex-1 pb-32">
-                    <AgendaList
-                        sections={agendaItems}
-                        renderItem={renderItem}
-                        sectionStyle={styles.sectionHeader}
-                        dayFormat={"M월 d일 (ddd)"}
-                        showsVerticalScrollIndicator={false}
-                        stickySectionHeadersEnabled={true}
-                    />
-                </Box>
-            </CalendarProvider>
+        <Box className="flex-1">
+            {/* <CalendarProvider */}
+            {/*     date={today} */}
+            {/*     theme={{ */}
+            {/*         todayButtonTextColor: colors["--color-primary-default"], */}
+            {/*     }} */}
+            {/*     showTodayButton */}
+            {/* > */}
+            {/*     <ExpandableCalendar */}
+            {/*         ref={calendarRef} */}
+            {/*         renderHeader={renderHeader} */}
+            {/*         onCalendarToggled={onCalendarToggled} */}
+            {/*         firstDay={1} */}
+            {/*         markedDates={marked.current} */}
+            {/*         theme={{ */}
+            {/*             backgroundColor: colors["--color-background-default"], */}
+            {/*             calendarBackground: */}
+            {/*                 colors["--color-background-default"], */}
+            {/*             textSectionTitleColor: */}
+            {/*                 colors["--color-primary-default"], */}
+            {/*             selectedDayTextColor: "#ffffff", */}
+            {/*             selectedDayBackgroundColor: */}
+            {/*                 colors["--color-primary-default"], */}
+            {/*             dayTextColor: "#ffffff", */}
+            {/*             todayTextColor: colors["--color-primary-default"], */}
+            {/*             monthTextColor: "#ffffff", */}
+            {/*             arrowColor: colors["--color-primary-default"], */}
+            {/*             textDayFontWeight: "300", */}
+            {/*             textMonthFontWeight: "bold", */}
+            {/*             textDayHeaderFontWeight: "300", */}
+            {/*             textDayFontSize: 16, */}
+            {/*             textMonthFontSize: 16, */}
+            {/*             textDayHeaderFontSize: 13, */}
+            {/*         }} */}
+            {/*         initialPosition={undefined} */}
+            {/*     /> */}
+            {/**/}
+            {/*     <Box className="px-6 pb-4"> */}
+            {/*         <Button */}
+            {/*             variant="solid" */}
+            {/*             className="h-14 flex-row items-center justify-center bg-primary-default data-[active=true]:bg-[#007B6D]" */}
+            {/*         > */}
+            {/*             <ButtonText className="text-xl font-bold text-gray-50 data-[active=true]:text-gray-50"> */}
+            {/*                 오늘 학습 시작 */}
+            {/*             </ButtonText> */}
+            {/*             <ButtonIcon as={ChevronRight} color="#ffffff" /> */}
+            {/*         </Button> */}
+            {/*     </Box> */}
+            {/**/}
+            {/*     <Box className="flex-1 pb-32"> */}
+            {/*         <AgendaList */}
+            {/*             sections={agendaItems} */}
+            {/*             renderItem={renderItem} */}
+            {/*             sectionStyle={styles.sectionHeader} */}
+            {/*             dayFormat={"M월 d일 (ddd)"} */}
+            {/*             showsVerticalScrollIndicator={false} */}
+            {/*             stickySectionHeadersEnabled={true} */}
+            {/*         /> */}
+            {/*     </Box> */}
+            {/* </CalendarProvider> */}
         </Box>
     );
 }
 
 const styles = StyleSheet.create({
     sectionHeader: {
-        backgroundColor: colors["--color-background-default"],
         color: "#ffffff",
         fontSize: 16,
         fontWeight: "600",
         paddingHorizontal: 24,
         paddingVertical: 12,
         borderBottomWidth: 1,
-        borderBottomColor: colors["--color-grey-600"],
     },
     agendaItem: {
         marginHorizontal: 24,
