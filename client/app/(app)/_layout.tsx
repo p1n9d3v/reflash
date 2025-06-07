@@ -1,10 +1,16 @@
 import { Box } from "@/components/ui/box";
+import { colors } from "@/components/ui/gluestack-ui-provider/config";
 import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { BlurView } from "expo-blur";
 import { Stack, usePathname, useRouter } from "expo-router";
-import { Dimensions, Platform, TouchableOpacity } from "react-native";
+import {
+    Dimensions,
+    Platform,
+    SafeAreaView,
+    TouchableOpacity,
+} from "react-native";
 
 export default function RootLayout() {
     return <RootLayoutNav />;
@@ -24,69 +30,36 @@ function RootLayoutNav() {
     const tabBarWidth = windowWidth * 0.8;
     return (
         <>
-            <Stack
-                initialRouteName="home"
-                screenOptions={
-                    {
-                        // headerStyle: {
-                        //     backgroundColor: colors["--color-background-default"],
-                        // },
-                    }
-                }
-            >
+            <Stack initialRouteName="home">
                 <Stack.Screen
                     name="achievement"
                     options={{
                         presentation: "modal",
                         headerTitle: "학습 성취 그래프",
-                        // headerTitleStyle: {
-                        //     color: colors["--color-white"],
-                        // },
                         headerBackButtonDisplayMode: "minimal",
                     }}
                 />
                 <Stack.Screen
                     name="home"
                     options={{
-                        headerTitleAlign: "left",
-                        headerTitle: () => null, // 기본 타이틀 제거
-                        headerLeft: () => (
-                            <Box className="flex-row items-center gap-x-2">
-                                <Image
-                                    source={require("assets/images/logo.png")}
-                                    className="h-6 w-6"
-                                />
-                                <Text className="text-3xl font-black text-white">
-                                    BRAINI
-                                </Text>
-                            </Box>
+                        header: () => (
+                            <SafeAreaView className="h-[72px] bg-grey-800">
+                                <Box className="p-6">
+                                    <Image
+                                        source={require("assets/images/header-logo.png")}
+                                        className="h-[24px] w-[87px]"
+                                    />
+                                </Box>
+                            </SafeAreaView>
                         ),
                     }}
                 />
             </Stack>
 
-            <Box
-                style={{
-                    overflow: "hidden",
-                    position: "absolute",
-                    bottom: 40,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                }}
-            >
+            <Box className="absolute bottom-10 w-full flex-row items-center justify-center overflow-hidden">
                 <BlurView
-                    style={{
-                        width: tabBarWidth,
-                        height: 90,
-                        borderRadius: 50,
-                        overflow: "hidden",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-evenly", // 균등한 간격으로 배치
-                        borderWidth: 2,
-                    }}
+                    style={{ width: tabBarWidth }}
+                    className="border-grey-700 h-[90px] flex-row items-center justify-evenly overflow-hidden rounded-full border-2"
                     tint="dark"
                     intensity={Platform.OS === "android" ? 90 : 5} // android 100 , ios 10
                     // experimentalBlurMethod="dimezisBlurView"
@@ -97,19 +70,19 @@ function RootLayoutNav() {
                         return (
                             <TouchableOpacity
                                 key={tab.key}
-                                style={{
-                                    alignItems: "center", // 아이콘과 텍스트 중앙 정렬
-                                    paddingHorizontal: 15, // 좌우 여백 추가
-                                }}
+                                className="items-center px-4"
                                 onPress={() => router.push(tab.path)}
                             >
-                                <FontAwesome size={28} name={tab.icon} />
-                                <Text
-                                    style={{
-                                        marginTop: 5,
-                                        fontSize: 12,
-                                    }}
-                                >
+                                <FontAwesome
+                                    size={28}
+                                    name={tab.icon}
+                                    color={
+                                        isActive
+                                            ? colors["--color-primary-400"]
+                                            : "#fff"
+                                    }
+                                />
+                                <Text className="mt-1 text-sm text-white">
                                     {tab.title}
                                 </Text>
                             </TouchableOpacity>

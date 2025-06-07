@@ -1,6 +1,32 @@
 "use client";
 import { vars } from "nativewind";
 
+export const colors = {
+    /* Primary */
+    "--color-primary-300": "#00A991",
+    "--color-primary-400": "#009883",
+    /* Secondary  */
+    /* Tertiary */
+    /* Error */
+    /* Success */
+    /* Warning */
+    /* Info */
+    /* Typography */
+    "--color-typography-100": "#F5F5F5",
+    "--color-typography-900": "#171717",
+    /* Outline */
+    /* Background */
+    /* Background Special */
+    /* Focus Ring Indicator  */
+    /* Grey */
+    "--color-grey-50": "#F9F9FD",
+    "--color-grey-200": "#D1D1D5",
+    "--color-grey-300": "#B1B1B7",
+    "--color-grey-700": "#25252A",
+    "--color-grey-800": "#1B1B1E",
+    "--color-grey-900": "#0C0C0D",
+};
+
 export const config = {
     light: vars({
         /* Primary */
@@ -155,28 +181,5 @@ export const config = {
         "--color-indicator-info": "83 153 236",
         "--color-indicator-error": "185 28 28",
     }),
-    dark: vars({
-        /* Primary */
-        "--color-primary-300": "#00A991",
-        "--color-primary-400": "#009883",
-        /* Secondary  */
-        /* Tertiary */
-        /* Error */
-        /* Success */
-        /* Warning */
-        /* Info */
-        /* Typography */
-        "--color-typography-100": "#F5F5F5",
-        "--color-typography-900": "#171717",
-        /* Outline */
-        /* Background */
-        /* Background Special */
-        /* Focus Ring Indicator  */
-        /* Grey */
-        "--color-grey-50": "#F9F9FD",
-        "--color-grey-200": "#D1D1D5",
-        "--color-grey-300": "#B1B1B7",
-        "--color-grey-800": "#1B1B1E",
-        "--color-grey-900": "#0C0C0D",
-    }),
+    dark: vars(colors),
 };

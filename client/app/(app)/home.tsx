@@ -9,7 +9,6 @@ import {
 
 import { Box } from "@/components/ui/box";
 import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
-import { colors } from "@/components/ui/gluestack-ui-provider/config";
 import { Text } from "@/components/ui/text";
 
 import {
@@ -33,7 +32,7 @@ const AgendaItem = ({ item }: { item: StudyItem }) => {
                         </Text>
                     )}
                 </Box>
-                <ChevronRight color={colors["--color-grey-200"]} size={18} />
+                {/* <ChevronRight color={colors["--color-grey-200"]} size={18} /> */}
             </Box>
         </TouchableOpacity>
     );
@@ -117,7 +116,7 @@ export default function Home() {
     }, []);
 
     return (
-        <Box className="flex-1">
+        <Box className="flex-1 bg-grey-800">
             {/* <CalendarProvider */}
             {/*     date={today} */}
             {/*     theme={{ */}

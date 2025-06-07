@@ -1,11 +1,9 @@
-import { colors } from "@/components/ui/gluestack-ui-provider/config";
-
 export interface StudyItem {
     title: string;
     description?: string;
     time?: string;
     completed?: boolean;
-    type: 'study' | 'review' | 'quiz';
+    type: "study" | "review" | "quiz";
 }
 
 export interface AgendaSection {
@@ -21,24 +19,19 @@ const generateAgendaItems = (): AgendaSection[] => {
     for (let i = 0; i < 7; i++) {
         const currentDate = new Date(today);
         currentDate.setDate(today.getDate() + i);
-        const dateString = currentDate.toISOString().split('T')[0];
+        const dateString = currentDate.toISOString().split("T")[0];
 
         let data: StudyItem[] = [];
 
         if (i === 0) {
-            data = [
-                { title: '오늘 학습 리스트', type: 'study' },
-            ];
-        }
-        else if (i === 1) {
-            data = [
-                { title: '학습 이름', type: 'study' },
-            ];
+            data = [{ title: "오늘 학습 리스트", type: "study" }];
+        } else if (i === 1) {
+            data = [{ title: "학습 이름", type: "study" }];
         }
 
         items.push({
             title: dateString,
-            data: data
+            data: data,
         });
     }
 
@@ -50,21 +43,22 @@ export const agendaItems: AgendaSection[] = generateAgendaItems();
 export const getMarkedDates = () => {
     const marked: { [key: string]: any } = {};
 
-    agendaItems.forEach(section => {
+    agendaItems.forEach((section) => {
         if (section.data.length > 0) {
             marked[section.title] = {
                 marked: true,
-                dotColor: colors["--color-primary-default"]
+                // dotColor: colors["--color-primary-default"],
             };
         }
     });
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     marked[today] = {
         ...marked[today],
         selected: true,
-        selectedColor: colors["--color-primary-default"]
+        // selectedColor: colors["--color-primary-default"],
     };
 
     return marked;
 };
+
