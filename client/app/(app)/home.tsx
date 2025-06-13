@@ -1,39 +1,21 @@
-import { ChartLine, ChevronDown } from "lucide-react-native";
-import { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import {
-    CalendarProvider,
-    ExpandableCalendar,
-    WeekCalendar,
-} from "react-native-calendars";
 import { Box } from "@/components/ui/box";
 import { Text } from "@/components/ui/text";
+import { ChartLine, ChevronDown } from "lucide-react-native";
+import { useState } from "react";
+import { TouchableOpacity } from "react-native";
+import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
 
-import { type StudyItem } from "@/mocks/agendaItems";
-import { useRouter } from "expo-router";
 import { colors } from "@/components/ui/gluestack-ui-provider/config";
+import { Modal, ModalBackdrop, ModalContent } from "@/components/ui/modal";
+import { Pressable } from "@/components/ui/pressable";
+import { VStack } from "@/components/ui/vstack";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useRouter } from "expo-router";
 
-const AgendaItem = ({ item }: { item: StudyItem }) => {
-    return (
-        <TouchableOpacity style={styles.agendaItem} activeOpacity={0.7}>
-            <Box className="flex-row items-center justify-between">
-                <Box className="flex-1">
-                    <Text className="mb-1 text-base font-medium text-white">
-                        {item.title}
-                    </Text>
-                    {item.description && (
-                        <Text className="text-sm text-gray-400">
-                            {item.description}
-                        </Text>
-                    )}
-                </Box>
-                {/* <ChevronRight color={colors["--color-grey-200"]} size={18} /> */}
-            </Box>
-        </TouchableOpacity>
-    );
+const convertDayToKor = (day: number) => {
+    const korDays = ["일", "월", "화", "수", "목", "금", "토"];
+    return korDays[day];
 };
-
-const date = new Date();
 
 const formatDate = (date: Date) => {
     const year = date.getFullYear();
@@ -43,10 +25,14 @@ const formatDate = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
+const todayDate = new Date();
+
 export default function Home() {
-    const displayYearMonth = `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
     const router = useRouter();
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const [showCalendar, setShowCalendar] = useState(false);
+
+    const [date, setDate] = useState<Date>(todayDate);
 
     const handleOpenAchievementModal = () => {
         router.push("/(app)/achievement");
@@ -56,26 +42,61 @@ export default function Home() {
         setShowCalendar((prev) => !prev);
     };
 
+    const handleToggleDatePicker = () => {
+        setShowDatePicker((prev) => !prev);
+    };
+
+    const handleChangeDate = (date: string | Date) => {
+        if (typeof date === "string") {
+            setDate(new Date(date));
+        } else {
+            setDate(date);
+        }
+    };
     return (
         <Box className="flex-1 bg-grey-800">
             <Box className="flex-row items-center justify-between px-6">
-                <TouchableOpacity
-                    className="flex-row items-center gap-x-2"
-                    activeOpacity={0.8}
-                    onPress={handleToggleCalendar}
-                >
-                    <Text className="text-2xl font-bold text-grey-100">
-                        {displayYearMonth}
-                    </Text>
-                    <ChevronDown color="#ffffff" size={24} />
-                </TouchableOpacity>
+                <Box className="relative flex-row items-center gap-x-2">
+                    <Pressable onPress={handleToggleDatePicker}>
+                        <Text className="text-2xl font-bold">
+                            {date.getFullYear()}년 {date.getMonth() + 1}월
+                        </Text>
+                    </Pressable>
+                    <Pressable onPress={handleToggleCalendar}>
+                        <ChevronDown color="#ffffff" size={24} />
+                    </Pressable>
+                    {showDatePicker && (
+                        <Modal
+                            isOpen={showDatePicker}
+                            onClose={() => {
+                                setShowDatePicker(false);
+                            }}
+                            size="lg"
+                        >
+                            <ModalBackdrop />
+                            <ModalContent className="border-2 border-primary-300 bg-grey-700">
+                                <DateTimePicker
+                                    mode="date"
+                                    value={date}
+                                    display="inline"
+                                    onChange={(_, date) =>
+                                        handleChangeDate(date as Date)
+                                    }
+                                />
+                            </ModalContent>
+                        </Modal>
+                    )}
+                </Box>
 
                 <TouchableOpacity onPress={handleOpenAchievementModal}>
                     <ChartLine color="#ffffff" size={24} />
                 </TouchableOpacity>
             </Box>
-            <Box className="my-4">
-                <CalendarProvider date={formatDate(date)}>
+            <Box className="my-4 flex-1">
+                <CalendarProvider
+                    date={formatDate(date)}
+                    onDateChanged={handleChangeDate}
+                >
                     {showCalendar && (
                         <ExpandableCalendar
                             theme={{
@@ -97,77 +118,47 @@ export default function Home() {
                                 textDayHeaderFontSize: 13,
                             }}
                             allowShadow={false}
+                            firstDay={1}
                         />
                     )}
+
+                    <Box className="px-6">
+                        <Box className="flex-row rounded-lg bg-grey-700">
+                            <Box className="items-center gap-2 p-2.5">
+                                <Text className="text-2xl font-bold">
+                                    {convertDayToKor(date.getDay())}
+                                </Text>
+                                <Text className="font-bold text-grey-400">
+                                    {date.getDate()}일
+                                </Text>
+                            </Box>
+                            <VStack space="xs" className="flex-1 p-2.5">
+                                <Text className="text-sm font-bold">
+                                    오늘 학습 리스트
+                                </Text>
+                                <Box className="relative">
+                                    <Box className="absolute bottom-0 left-0 top-0 w-[2px] rounded-l-lg bg-[#8484FF]"></Box>
+                                    <Text className="ml-2 text-sm text-grey-300">
+                                        학습 이름
+                                    </Text>
+                                </Box>
+                                <Box className="relative">
+                                    <Box className="absolute bottom-0 left-0 top-0 w-[2px] rounded-l-lg bg-[#F6A9FD]"></Box>
+                                    <Text className="ml-2 text-sm text-grey-300">
+                                        학습 이름
+                                    </Text>
+                                </Box>
+                                <Box className="relative">
+                                    <Box className="absolute bottom-0 left-0 top-0 w-[2px] rounded-l-lg bg-[#B9A6FF]"></Box>
+                                    <Text className="ml-2 text-sm text-grey-300">
+                                        학습 이름
+                                    </Text>
+                                </Box>
+                            </VStack>
+                        </Box>
+                    </Box>
                 </CalendarProvider>
             </Box>
-            {/* <CalendarProvider */}
-            {/*     date={today} */}
-            {/*     theme={{ */}
-            {/*         todayButtonTextColor: colors["--color-primary-default"], */}
-            {/*     }} */}
-            {/*     showTodayButton */}
-            {/* > */}
-            {/*     <ExpandableCalendar */}
-            {/*         ref={calendarRef} */}
-            {/*         renderHeader={renderHeader} */}
-            {/*         onCalendarToggled={onCalendarToggled} */}
-            {/*         firstDay={1} */}
-            {/*         markedDates={marked.current} */}
-            {/*         theme={{ */}
-            {/* backgroundColor: colors["--color-background-default"], */}
-            {/* calendarBackground: colors["--color-background-default"], */}
-            {/* textSectionTitleColor: colors["--color-primary-default"], */}
-            {/* selectedDayTextColor: "#ffffff", selectedDayBackgroundColor: */}
-            {/* colors["--color-primary-default"], dayTextColor: "#ffffff", */}
-            {/* todayTextColor: colors["--color-primary-default"], monthTextColor: */}
-            {/* "#ffffff", arrowColor: colors["--color-primary-default"], */}
-            {/* textDayFontWeight: "300", textMonthFontWeight: "bold", */}
-            {/* textDayHeaderFontWeight: "300", textDayFontSize: 16, */}
-            {/* textMonthFontSize: 16, textDayHeaderFontSize: 13, */}
-            {/*         }} */}
-            {/*         initialPosition={undefined} */}
-            {/*     /> */}
-            {/**/}
-            {/*     <Box className="px-6 pb-4"> */}
-            {/*         <Button */}
-            {/*             variant="solid" */}
-            {/*             className="h-14 flex-row items-center justify-center bg-primary-default data-[active=true]:bg-[#007B6D]" */}
-            {/*         > */}
-            {/*             <ButtonText className="text-xl font-bold text-gray-50 data-[active=true]:text-gray-50"> */}
-            {/*                 오늘 학습 시작 */}
-            {/*             </ButtonText> */}
-            {/*             <ButtonIcon as={ChevronRight} color="#ffffff" /> */}
-            {/*         </Button> */}
-            {/*     </Box> */}
-            {/**/}
-            {/*     <Box className="flex-1 pb-32"> */}
-            {/*         <AgendaList */}
-            {/*             sections={agendaItems} */}
-            {/*             renderItem={renderItem} */}
-            {/*             sectionStyle={styles.sectionHeader} */}
-            {/*             dayFormat={"M월 d일 (ddd)"} */}
-            {/*             showsVerticalScrollIndicator={false} */}
-            {/*             stickySectionHeadersEnabled={true} */}
-            {/*         /> */}
-            {/*     </Box> */}
-            {/* </CalendarProvider> */}
         </Box>
     );
 }
-
-const styles = StyleSheet.create({
-    sectionHeader: {
-        color: "#ffffff",
-        fontSize: 16,
-        fontWeight: "600",
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-    },
-    agendaItem: {
-        marginHorizontal: 24,
-        marginVertical: 4,
-        padding: 16,
-    },
-});

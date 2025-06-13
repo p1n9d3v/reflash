@@ -28,6 +28,7 @@ module.exports = {
                     white: "#FFFFFF",
                     "100": "var(--color-typography-100)",
                     "900": "var(--color-typography-900)",
+                    default: "#ffffff",
                 },
                 outline: {},
                 background: {},
@@ -35,9 +36,11 @@ module.exports = {
                 dark: {},
                 grey: {
                     "50": "var(--color-grey-50)",
-                    "100": "var(--color-grey-100)",
+                    "100": "var(--color-grey-100",
                     "200": "var(--color-grey-200)",
                     "300": "var(--color-grey-300)",
+                    "400": "var(--color-grey-400)",
+                    "700": "var(--color-grey-700)",
                     "800": "var(--color-grey-800)",
                     "900": "var(--color-grey-900)",
                 },
@@ -54,6 +57,7 @@ module.exports = {
             fontSize: {
                 "2xs": "10px",
             },
+
             boxShadow: {
                 "hard-1": "-2px 2px 8px 0px rgba(38, 38, 38, 0.20)",
                 "hard-2": "0px 3px 10px 0px rgba(38, 38, 38, 0.20)",
