@@ -1,29 +1,22 @@
 import { Box } from "@/components/ui/box";
 import { Text } from "@/components/ui/text";
-import { ChartLine, ChevronDown } from "lucide-react-native";
+import { ChartLine, ChevronDown, ChevronRight } from "lucide-react-native";
 import { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
 
+import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
 import { colors } from "@/components/ui/gluestack-ui-provider/config";
 import { Modal, ModalBackdrop, ModalContent } from "@/components/ui/modal";
 import { Pressable } from "@/components/ui/pressable";
 import { VStack } from "@/components/ui/vstack";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
-
-const convertDayToKor = (day: number) => {
-    const korDays = ["일", "월", "화", "수", "목", "금", "토"];
-    return korDays[day];
-};
-
-const formatDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-};
+import { agendaItems } from "@/mocks/agendaItems";
+import DayItem from "@/components/home/day-item";
+import DeckItem from "@/components/home/deck-item";
+import { convertDayToKor, formatDate, getWeekDays } from "@/utils/date";
+import { Divider } from "@/components/ui/divider";
 
 const todayDate = new Date();
 
@@ -53,6 +46,10 @@ export default function Home() {
             setDate(date);
         }
     };
+
+    const weekDays = getWeekDays(date);
+    console.log(weekDays);
+
     return (
         <Box className="flex-1 bg-grey-800">
             <Box className="flex-row items-center justify-between px-6">
@@ -136,26 +133,67 @@ export default function Home() {
                                 <Text className="text-sm font-bold">
                                     오늘 학습 리스트
                                 </Text>
-                                <Box className="relative">
-                                    <Box className="absolute bottom-0 left-0 top-0 w-[2px] rounded-l-lg bg-[#8484FF]"></Box>
-                                    <Text className="ml-2 text-sm text-grey-300">
-                                        학습 이름
-                                    </Text>
-                                </Box>
-                                <Box className="relative">
-                                    <Box className="absolute bottom-0 left-0 top-0 w-[2px] rounded-l-lg bg-[#F6A9FD]"></Box>
-                                    <Text className="ml-2 text-sm text-grey-300">
-                                        학습 이름
-                                    </Text>
-                                </Box>
-                                <Box className="relative">
-                                    <Box className="absolute bottom-0 left-0 top-0 w-[2px] rounded-l-lg bg-[#B9A6FF]"></Box>
-                                    <Text className="ml-2 text-sm text-grey-300">
-                                        학습 이름
-                                    </Text>
-                                </Box>
+                                {[
+                                    {
+                                        title: "학습 이름",
+                                        color: "#8484FF",
+                                    },
+                                    {
+                                        title: "학습 이름",
+                                        color: "#F6A9FD",
+                                    },
+                                    {
+                                        title: "학습 이름",
+                                        color: "#B9A6FF",
+                                    },
+                                ].map((item, index) => (
+                                    <DeckItem
+                                        key={index}
+                                        title={item.title}
+                                        color={item.color}
+                                    />
+                                ))}
                             </VStack>
                         </Box>
+                    </Box>
+
+                    <Box className="mt-2 px-6">
+                        <Button className="h-[52px] justify-between rounded-lg bg-primary-300">
+                            <ButtonText className="text-white">
+                                오늘 학습 시작
+                            </ButtonText>
+                            <ButtonIcon as={ChevronRight} color="#fff" />
+                        </Button>
+                    </Box>
+
+                    <Box className="my-4 flex-1 px-6">
+                        <FlatList
+                            data={agendaItems.filter((data) =>
+                                weekDays.includes(data.date),
+                            )}
+                            renderItem={({ item, index }) => (
+                                <DayItem
+                                    key={index}
+                                    date={new Date(item.date)}
+                                    onChange={handleChangeDate}
+                                />
+                            )}
+                            keyExtractor={(item, index) =>
+                                `day-${item.date}-${index}`
+                            }
+                            ItemSeparatorComponent={() => (
+                                <Divider className="bg-grey-600" />
+                            )}
+                            ListHeaderComponent={() => (
+                                <Divider className="bg-grey-600" />
+                            )}
+                            ListFooterComponent={() => (
+                                <Divider className="bg-grey-600" />
+                            )}
+                            contentContainerStyle={{ paddingBottom: 100 }}
+                            alwaysBounceVertical={false}
+                            showsVerticalScrollIndicator={false}
+                        />
                     </Box>
                 </CalendarProvider>
             </Box>
