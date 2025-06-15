@@ -25,16 +25,17 @@ export default function AchievementScreen({}: AchievementScreenProps) {
         progressValue === 1 ? "text-primary-default" : "text-gray-600";
 
     return (
-        <Box className="flex-1 bg-dark-secondary">
+        <Box className="flex-1 bg-grey-800">
             <Accordion
                 size="md"
                 variant="filled"
                 type="single"
                 isCollapsible={true}
                 isDisabled={false}
+                className="bg-grey-800"
             >
                 <AccordionItem value="a">
-                    <AccordionHeader className="bg-dark-secondary">
+                    <AccordionHeader className="bg-grey-800">
                         <AccordionTrigger>
                             {({ isExpanded }) => {
                                 return (
@@ -60,7 +61,7 @@ export default function AchievementScreen({}: AchievementScreenProps) {
                             }}
                         </AccordionTrigger>
                     </AccordionHeader>
-                    <AccordionContent className="bg-dark-secondary py-10">
+                    <AccordionContent className="bg-grey-800 py-10">
                         <Box>
                             <Heading className="text-xl font-bold text-white">
                                 학습 완료율
@@ -68,7 +69,7 @@ export default function AchievementScreen({}: AchievementScreenProps) {
                             <Box className="relative mt-2.5 h-10 w-full">
                                 <Progress.Bar
                                     progress={progressValue}
-                                    color={colors["--color-primary-default"]}
+                                    color={colors["--color-primary-300"]}
                                     width={null}
                                 />
                                 <Text
@@ -76,7 +77,7 @@ export default function AchievementScreen({}: AchievementScreenProps) {
                                         left: `${progressValue * 100}%`,
                                         transform: [{ translateX: -10 }],
                                     }}
-                                    className="absolute bottom-0 text-sm font-bold text-primary-default"
+                                    className="text-primary-default absolute bottom-0 text-sm font-bold"
                                 >
                                     {`${Math.round(progressValue * 100)}%`}
                                 </Text>
@@ -125,13 +126,7 @@ export default function AchievementScreen({}: AchievementScreenProps) {
                                         progress={progressValue}
                                         size={200}
                                         thickness={30}
-                                        color={
-                                            colors["--color-primary-default"]
-                                        }
-                                        borderWidth={0}
-                                        unfilledColor={
-                                            colors["--color-grey-700"]
-                                        }
+                                        color={colors["--color-primary-300"]}
                                         strokeCap="round"
                                         showsText={true}
                                         formatText={() => {

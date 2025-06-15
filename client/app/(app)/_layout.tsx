@@ -37,6 +37,12 @@ function RootLayoutNav() {
                         presentation: "modal",
                         headerTitle: "학습 성취 그래프",
                         headerBackButtonDisplayMode: "minimal",
+                        headerStyle: {
+                            backgroundColor: colors["--color-grey-800"],
+                        },
+                        headerTitleStyle: {
+                            color: "#fff",
+                        },
                     }}
                 />
                 <Stack.Screen
@@ -59,7 +65,7 @@ function RootLayoutNav() {
             <Box className="absolute bottom-10 w-full flex-row items-center justify-center overflow-hidden">
                 <BlurView
                     style={{ width: tabBarWidth }}
-                    className="border-grey-700 h-[90px] flex-row items-center justify-evenly overflow-hidden rounded-full border-2"
+                    className="h-[90px] flex-row items-center justify-evenly overflow-hidden rounded-full border-2 border-grey-700"
                     tint="dark"
                     intensity={Platform.OS === "android" ? 90 : 5} // android 100 , ios 10
                     // experimentalBlurMethod="dimezisBlurView"
