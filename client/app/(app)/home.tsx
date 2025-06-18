@@ -17,6 +17,9 @@ import DayItem from "@/components/home/day-item";
 import DeckItem from "@/components/home/deck-item";
 import { convertDayToKor, formatDate, getWeekDays } from "@/utils/date";
 import { Divider } from "@/components/ui/divider";
+import { useSchedule } from "@/hooks/useSchedule";
+import { useWeekSchedule } from "@/hooks/useWeekSchedule";
+import { ActivityIndicator } from "react-native";
 
 const todayDate = new Date();
 
@@ -26,6 +29,11 @@ export default function Home() {
     const [showCalendar, setShowCalendar] = useState(false);
 
     const [date, setDate] = useState<Date>(todayDate);
+    const { data: todaySchedule, isLoading } = useSchedule(date);
+    const weekDays = getWeekDays(date);
+    const startDate = new Date(weekDays[0]);
+    const endDate = new Date(weekDays[6]);
+    const { data: weekSchedule } = useWeekSchedule(startDate, endDate);
 
     const handleOpenAchievementModal = () => {
         router.push("/(app)/achievement");
@@ -46,8 +54,14 @@ export default function Home() {
             setDate(date);
         }
     };
+    const todayScheduleFromWeek = weekSchedule?.find((schedule) => {
+        const scheduleDate = schedule.date.toDate();
+        scheduleDate.setHours(0, 0, 0, 0);
+        const today = new Date(date);
+        today.setHours(0, 0, 0, 0);
+        return scheduleDate.getTime() === today.getTime();
+    });
 
-    const weekDays = getWeekDays(date);
     console.log(weekDays);
 
     return (
@@ -133,26 +147,25 @@ export default function Home() {
                                 <Text className="text-sm font-bold">
                                     오늘 학습 리스트
                                 </Text>
-                                {[
-                                    {
-                                        title: "학습 이름",
-                                        color: "#8484FF",
-                                    },
-                                    {
-                                        title: "학습 이름",
-                                        color: "#F6A9FD",
-                                    },
-                                    {
-                                        title: "학습 이름",
-                                        color: "#B9A6FF",
-                                    },
-                                ].map((item, index) => (
-                                    <DeckItem
-                                        key={index}
-                                        title={item.title}
-                                        color={item.color}
-                                    />
-                                ))}
+                                {isLoading ? (
+                                    <Box className="items-center py-4">
+                                        <ActivityIndicator color="#ffffff" />
+                                    </Box>
+                                ) : todayScheduleFromWeek?.decks ? (
+                                    todayScheduleFromWeek.decks.map(
+                                        (deck: any, index: number) => (
+                                            <DeckItem
+                                                key={deck.deckId || index}
+                                                title={deck.deckName}
+                                                color={deck.color}
+                                            />
+                                        ),
+                                    )
+                                ) : (
+                                    <Text className="ml-2 text-sm text-grey-400">
+                                        오늘 예정된 학습이 없습니다
+                                    </Text>
+                                )}
                             </VStack>
                         </Box>
                     </Box>
@@ -168,19 +181,15 @@ export default function Home() {
 
                     <Box className="my-4 flex-1 px-6">
                         <FlatList
-                            data={agendaItems.filter((data) =>
-                                weekDays.includes(data.date),
-                            )}
-                            renderItem={({ item, index }) => (
+                            data={weekSchedule || []} // agendaItems 대신 weekSchedule 사용
+                            renderItem={({ item }) => (
                                 <DayItem
-                                    key={index}
-                                    date={new Date(item.date)}
+                                    date={new Date(item.date.toDate())} // Timestamp를 Date로 변환
+                                    schedule={item} // schedule 데이터 전달
                                     onChange={handleChangeDate}
                                 />
                             )}
-                            keyExtractor={(item, index) =>
-                                `day-${item.date}-${index}`
-                            }
+                            keyExtractor={(item) => item.id}
                             ItemSeparatorComponent={() => (
                                 <Divider className="bg-grey-600" />
                             )}
