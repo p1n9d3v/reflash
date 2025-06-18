@@ -104,33 +104,59 @@ export const mockData = async (user?: FirebaseAuthTypes.User | null) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const schedule = {
-            id: `schedule_${userId}_${today.toISOString().split("T")[0]}`,
-            userId: userId,
-            date: Timestamp.fromDate(today),
-            decks: [
-                {
-                    deckId: "deck1",
-                    deckName: "TOEIC 필수 단어 800",
-                    category: "영어",
-                    color: "#8484FF",
-                    completed: false,
-                    completedAt: null,
-                },
-                {
-                    deckId: "deck3",
-                    deckName: "JLPT N5 기초 단어",
-                    category: "일본어",
-                    color: "#F6A9FD",
-                    completed: false,
-                    completedAt: null,
-                },
-            ],
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now(),
-        };
+        const schedules = [];
+        for (let i = 0; i < 7; i++) {
+            const scheduleDate = new Date();
+            scheduleDate.setDate(scheduleDate.getDate() + i);
+            scheduleDate.setHours(0, 0, 0, 0);
 
-        await db.collection("schedules").doc(schedule.id).set(schedule);
+            // 날짜별로 다른 덱 할당
+            const dayDecks =
+                i % 2 === 0
+                    ? [
+                          {
+                              deckId: "deck1",
+                              deckName: "TOEIC 필수 단어 800",
+                              category: "영어",
+                              color: "#8484FF",
+                              completed: false,
+                              completedAt: null,
+                          },
+                          {
+                              deckId: "deck3",
+                              deckName: "JLPT N5 기초 단어",
+                              category: "일본어",
+                              color: "#F6A9FD",
+                              completed: false,
+                              completedAt: null,
+                          },
+                      ]
+                    : [
+                          {
+                              deckId: "deck2",
+                              deckName: "Daily English Conversation",
+                              category: "영어",
+                              color: "#B9A6FF",
+                              completed: false,
+                              completedAt: null,
+                          },
+                      ];
+
+            const schedule = {
+                id: `schedule_${userId}_${scheduleDate.toISOString().split("T")[0]}`,
+                userId: userId,
+                date: Timestamp.fromDate(scheduleDate),
+                decks: dayDecks,
+                createdAt: Timestamp.now(),
+                updatedAt: Timestamp.now(),
+            };
+
+            schedules.push(schedule);
+        }
+
+        for (const schedule of schedules) {
+            await db.collection("schedules").doc(schedule.id).set(schedule);
+        }
 
         // 학습 통계
         const achievements = [
